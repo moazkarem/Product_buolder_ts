@@ -1,12 +1,15 @@
+import { Productdata } from "./Components/Data/data"
+import Productcard from "./Components/Productcard/Productcard"
 
-
+const Myproducts = Productdata.map((product)=> <Productcard key={product.id} product={product} />)
 const App = () => {
   return (
-    <div>
-       <h1 className="text-3xl font-bold underline text-center text-red-600">
-      Hello world!
-    </h1>
+    <main className="container mx-auto">
+   <div className=" m-5 grid grid-cols-1 md:gap-4 md:grid-cols-2 lg:grid-cols-3 gap-3">
+     {Myproducts}
     </div>
+    </main>
+ 
   )
 }
 

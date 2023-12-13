@@ -1,19 +1,45 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Productdata, dataInputs } from "./Components/Data/data";
 import Productcard from "./Components/Productcard/Productcard";
 import Modal from "./Components/Ui/Modal";
 import Button from "./Components/Ui/Button";
 import Input from "./Components/Ui/Input";
+import { Iproducts } from "./Components/Shared_Interfaces/Interfavess";
 const Myproducts = Productdata.map((product) => (
   <Productcard key={product.id} product={product} />
 ));
+
+
+
+const App = () => {
+  const [products , setproducts] = useState<Iproducts>({
+    title: '',
+    description: '',
+    imageURL: '',
+    price: '',
+    colors:[],
+    category:{
+      name:'',
+      imageURL:''
+    }
+  
+  })
+
+  const changeHandeler = (e:ChangeEvent<HTMLInputElement>)=>{
+    const {value , name} = e.target
+    setproducts({
+     ...products ,
+     [name]: value
+    })
+
+   
+}
 const inputs = dataInputs.map((input) => (
   <div key={input.id} className="flex flex-col">
     <label htmlFor={input.id} className="mb-[1px] font-medium text-sm text-gray-700">{input.label}</label>
-    <Input type={input.type} id={input.id} />
+    <Input onChange={changeHandeler} name={input.name} value={products[input.name]} type={input.type} id={input.id} />
   </div>
 ));
-const App = () => {
   const [isOpen, setIsOpen] = useState(false);
   function closeModal() {
     setIsOpen(false);
@@ -23,6 +49,8 @@ const App = () => {
     console.log("Modal opened!");
     setIsOpen(true);
   }
+ 
+ 
   return (
     <main className="container mx-auto">
       <Button width={"w-52"} className={"bg-red-500  m-5"} onClick={openModal}>
@@ -32,7 +60,7 @@ const App = () => {
         {Myproducts}
       </div>
       <Modal closeModal={closeModal} isOpen={isOpen} title="Add New Product">
-      <div className="space-y-3">
+      <form className="space-y-3">
       {inputs}
       <div className="space-x-3  flex justify-center items-center">
           <Button width={"w-44"} className="bg-gray-900 " onClick={closeModal}>
@@ -43,7 +71,7 @@ const App = () => {
           </Button>
          
         </div>
-      </div>
+      </form>
        
       </Modal>
     </main>

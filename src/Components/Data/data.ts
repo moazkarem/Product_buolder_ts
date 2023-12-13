@@ -160,7 +160,7 @@ export const dataInputs:Iinputs[]=[
   },
   {
     id:"image",
-    name:"imageUrl",
+    name:"imageURL",
     type:"text",
     label:"Product Image Url"
   },

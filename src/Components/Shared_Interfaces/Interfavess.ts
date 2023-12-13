@@ -12,7 +12,7 @@ export interface Iproducts{
   }
 export interface Iinputs{
   id:string ,
-  name:string,
+  name:'title' | 'description' | 'imageURL' | 'price' ,
   label:string,
   type:string,
 }

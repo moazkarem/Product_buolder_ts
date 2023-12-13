@@ -2,7 +2,7 @@ import ImagePrpduct from "../Image_component/ImagePrpduct";
 import Button from "../Ui/Button";
 import { Iproducts } from "../Shared_Interfaces/Interfavess";
 import { cutText } from "../utilis/Textslics";
-/* eslint-disable no-empty-pattern */
+
 interface Iprops {
   product: Iproducts;
 }
@@ -35,15 +35,15 @@ const Productcard = ({ product }: Iprops) => {
       <div className="flex justify-around mt-2 space-x-2 items-center">
         <Button
           width={"w-40"}
-          clasName="bg-indigo-600"
-          onClick={() => console.log("hello")}
+          className="bg-indigo-600"
+        
         >
           Edit
         </Button>
         <Button
           width={"w-40"}
-          clasName="bg-teal-600"
-          onClick={() => console.log("dek")}
+          className="bg-teal-600"
+         
         >
           Delete
         </Button>

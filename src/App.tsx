@@ -9,7 +9,7 @@ const Myproducts = Productdata.map((product) => (
 ));
 const inputs = dataInputs.map((input) => (
   <div key={input.id} className="flex flex-col">
-    <label htmlFor={input.id}>{input.label}</label>
+    <label htmlFor={input.id} className="mb-[1px] font-medium text-sm text-gray-700">{input.label}</label>
     <Input type={input.type} id={input.id} />
   </div>
 ));
@@ -32,13 +32,19 @@ const App = () => {
         {Myproducts}
       </div>
       <Modal closeModal={closeModal} isOpen={isOpen} title="Add New Product">
-        {inputs}
-        <div className="space-x-2 flex justify-center items-center">
-          <Button width={"w-64"} className="bg-gray-900" onClick={closeModal}>
+      <div className="space-y-3">
+      {inputs}
+      <div className="space-x-3  flex justify-center items-center">
+          <Button width={"w-44"} className="bg-gray-900 " onClick={closeModal}>
             Submit
+          </Button>
+          <Button width={"w-44"} className="bg-gray-300 " onClick={closeModal}>
+            Cancel
           </Button>
          
         </div>
+      </div>
+       
       </Modal>
     </main>
   );

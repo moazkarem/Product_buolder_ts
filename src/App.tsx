@@ -1,11 +1,20 @@
 import { useState } from "react";
-import { Productdata } from "./Components/Data/data";
+import { Productdata, dataInputs } from "./Components/Data/data";
 import Productcard from "./Components/Productcard/Productcard";
 import Modal from "./Components/Ui/Modal";
 import Button from "./Components/Ui/Button";
-const Myproducts = Productdata.map(product =>  <Productcard key={product.id} product={product} />)
+import Input from "./Components/Ui/Input";
+const Myproducts = Productdata.map((product) => (
+  <Productcard key={product.id} product={product} />
+));
+const inputs = dataInputs.map((input) => (
+  <div key={input.id} className="flex flex-col">
+    <label htmlFor={input.id}>{input.label}</label>
+    <Input type={input.type} id={input.id} />
+  </div>
+));
 const App = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   function closeModal() {
     setIsOpen(false);
   }
@@ -16,7 +25,6 @@ const App = () => {
   }
   return (
     <main className="container mx-auto">
-     
       <Button width={"w-52"} className={"bg-red-500  m-5"} onClick={openModal}>
         Open modal
       </Button>
@@ -24,17 +32,12 @@ const App = () => {
         {Myproducts}
       </div>
       <Modal closeModal={closeModal} isOpen={isOpen} title="Add New Product">
+        {inputs}
         <div className="space-x-2 flex justify-center items-center">
-          <Button width={"w-40"} className="bg-gray-900" onClick={closeModal}>
+          <Button width={"w-64"} className="bg-gray-900" onClick={closeModal}>
             Submit
           </Button>
-          <Button
-            width={"w-40"}
-            className="bg-gray-500"
-            onClick={closeModal}
-          >
-            Cancel
-          </Button>
+         
         </div>
       </Modal>
     </main>

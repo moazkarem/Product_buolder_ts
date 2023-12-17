@@ -2,12 +2,14 @@ import ImagePrpduct from "../Image_component/ImagePrpduct";
 import Button from "../Ui/Button";
 import { Iproducts } from "../Shared_Interfaces/Interfavess";
 import { cutText } from "../utilis/Textslics";
+import Circle from "../Circles/Circle";
 
 interface Iprops {
   product: Iproducts;
 }
 const Productcard = ({ product }: Iprops) => {
-  const { title, description, imageURL, price , category } = product;
+  const { title, description, imageURL, price , category , colors } = product;
+  const circles = colors.map(color => <Circle key={color} color={color} />)
   return (
     <div className="max-w-sm  text-white lg:max-w-lg mx-auto md:mx-auto lg:me-2 flex flex-col border rounded-md p-2 ">
       <ImagePrpduct
@@ -18,9 +20,7 @@ const Productcard = ({ product }: Iprops) => {
       <h3>{title}</h3>
       <p>{cutText(description)}</p>
       <div className="circles flex items-center my-3 space-x-2">
-        <div className="w-5 h-5 bg-indigo-700 rounded-full cursor-pointer"></div>
-        <div className="w-5 h-5 bg-yellow-700 rounded-full cursor-pointer"></div>
-        <div className="w-5 h-5 bg-red-700 rounded-full cursor-pointer"></div>
+  {circles}
       </div>
 
       <div className="flex  items-center  justify-between">

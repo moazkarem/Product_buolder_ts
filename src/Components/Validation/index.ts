@@ -6,7 +6,7 @@ interface Objdata  {
 }
 export const errValidation=(product:Objdata)=>
 {
-    const validateUrl = /\.(jpeg|jpg|gif|png|bmp|svg|webp)$/i.test(product.imageURL)
+    const validateUrl = /^(https?|ftp):\/\/[^\s\\/$.?#].[^\s]*$/i.test(product.imageURL)
     const errors:Objdata = {
         title: '',
         description: '',

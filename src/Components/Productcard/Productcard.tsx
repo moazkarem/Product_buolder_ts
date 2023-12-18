@@ -6,8 +6,20 @@ import Circle from "../Circles/Circle";
 
 interface Iprops {
   product: Iproducts;
+  setEditproduct:(product:Iproducts)=>void
+  openModalEdit:()=>void
 }
-const Productcard = ({ product }: Iprops) => {
+
+
+const Productcard = ({ product , setEditproduct , openModalEdit}: Iprops) => {
+
+  /* _______________ Edit Handeler _________ */
+
+const editHandeler = ()=>{
+  setEditproduct(product)
+  openModalEdit()
+  
+}
   const { title, description, imageURL, price , category , colors } = product;
   const circles = colors.map(color => <Circle key={color} color={color} />)
   return (
@@ -36,7 +48,8 @@ const Productcard = ({ product }: Iprops) => {
         <Button
           width={"w-40"}
           className="bg-indigo-600"
-        
+        onClick={editHandeler
+        }
         >
           Edit
         </Button>
@@ -53,3 +66,5 @@ const Productcard = ({ product }: Iprops) => {
 };
 
 export default Productcard;
+
+

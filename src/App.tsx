@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import {
+  CategData,
   Productdata,
   colors__circle,
   dataInputs,
@@ -12,11 +13,9 @@ import { Iproducts } from "./Components/Shared_Interfaces/Interfavess";
 import { errValidation } from "./Components/Validation";
 import Errormsg from "./Components/Error/Errormsg";
 import Circle from "./Components/Circles/Circle";
+import Selectmenue from "./Components/Ui/Selectmenue";
 
 const App = () => {
-  const [tempColor, setTempColor] = useState<string[]>([]);
-  const [Myproductsarr, setMyproductsarr] = useState(Productdata);
-
   const defaultobj = {
     title: "",
     description: "",
@@ -28,10 +27,25 @@ const App = () => {
       imageURL: "",
     },
   };
+  const [tempColor, setTempColor] = useState<string[]>([]);
+  const [Myproductsarr, setMyproductsarr] = useState(Productdata);
+  const [selected, setSelected] = useState(CategData[0]);
+  const [editproduct , setEditproduct] = useState<Iproducts>(defaultobj)
+  const [isOpenEdit, setisOpenEdit] = useState(false);
+    /*_______________________________ function Modals Edit_____________ */
+    function closeModalEdit() {
+      setisOpenEdit(false);
+    }
+  
+    function openModalEdit() {
+      setisOpenEdit(true);
+    }
   const Myproducts = Myproductsarr.map((product) => (
-    <Productcard key={product.id} product={product} />
+    <Productcard key={product.id} product={product} setEditproduct={setEditproduct} openModalEdit={openModalEdit}/>
   ));
 
+  console.log(editproduct , 'my edit  ');
+  
   const circles = colors__circle.map((color) => (
     <Circle
       onClick={() => {
@@ -51,6 +65,7 @@ const App = () => {
     description: "",
     imageURL: "",
     price: "",
+
   });
 
   const changeHandeler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -93,12 +108,13 @@ const App = () => {
       description,
       imageURL,
       price,
+
     });
     const hasErrmesg =
       Object.values(errors).some((val) => val === "") &&
       Object.values(errors).every((val) => val === "");
     if (!hasErrmesg) {
-      seterrObj(errors);
+
       return;
     }
 
@@ -108,9 +124,11 @@ const App = () => {
         ...products,
         colors: tempColor,
         id: Math.ceil(Math.random() * 100).toString(),
+        category: selected,
       },
     ]);
     setproducts(defaultobj);
+    setTempColor([]);
     closeModal();
   };
 
@@ -120,6 +138,7 @@ const App = () => {
   };
   /*__________Modal Functions ____________ */
   const [isOpen, setIsOpen] = useState(false);
+
   function closeModal() {
     setIsOpen(false);
   }
@@ -127,6 +146,8 @@ const App = () => {
   function openModal() {
     setIsOpen(true);
   }
+
+
 
   return (
     <main className="container mx-auto">
@@ -136,9 +157,11 @@ const App = () => {
       <div className="m-5 grid grid-cols-1 md:gap-4 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {Myproducts}
       </div>
+      /*_________________________________ ADD PRODUCT MODAL */
       <Modal closeModal={closeModal} isOpen={isOpen} title="Add New Product">
         <form onSubmit={submitHandeler} className="space-y-3">
           {inputs}
+          <Selectmenue selected={selected} setSelected={setSelected} />
           <div className="circles flex items-center my-3 space-x-2">
             {circles}
           </div>
@@ -153,6 +176,44 @@ const App = () => {
               </div>
             ))}
           </div>
+
+          <div className="space-x-3  flex justify-center items-center">
+            <Button width={"w-44"} className="bg-gray-900 ">
+              Submit
+            </Button>
+            <Button
+              width={"w-44"}
+              className="bg-gray-300 "
+              onClick={canselHandeler}
+            >
+              Cancel
+            </Button>
+          </div>
+        </form>
+      </Modal>
+
+
+
+      /*_________________________________ Edit PRODUCT MODAL */
+      <Modal closeModal={closeModalEdit} isOpen={isOpenEdit} title="Edit  Product" >
+        <form onSubmit={submitHandeler} className="space-y-3">
+          {inputs}
+          <Selectmenue selected={selected} setSelected={setSelected} />
+          <div className="circles flex items-center my-3 space-x-2">
+            {circles}
+          </div>
+          <div className="circles flex-wrap flex items-center my-3 space-x-2">
+            {tempColor.map((item) => (
+              <div
+                key={item}
+                className="p-1  m-1 rounded-md text-xs text-white flex flex-wrap"
+                style={{ backgroundColor: item }}
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+
           <div className="space-x-3  flex justify-center items-center">
             <Button width={"w-44"} className="bg-gray-900 ">
               Submit

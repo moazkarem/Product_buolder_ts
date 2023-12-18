@@ -15,4 +15,10 @@ export interface Iinputs{
   name:'title' | 'description' | 'imageURL' | 'price' ,
   label:string,
   type:string,
+
+}
+export interface Icateg{
+  id:string,
+  name:string,
+  imageURL: string;
 }

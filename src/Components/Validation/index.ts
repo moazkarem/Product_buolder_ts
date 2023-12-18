@@ -3,6 +3,8 @@ interface Objdata  {
     description: string,
     imageURL: string,
     price: string,
+
+    
 }
 export const errValidation=(product:Objdata)=>
 {
@@ -11,7 +13,9 @@ export const errValidation=(product:Objdata)=>
         title: '',
         description: '',
         imageURL: '',
-        price: ''
+        price: '',
+
+ 
     }
     if(!product.title.trim() || product.title.length<10 ||product.title.length>80){
         errors.title="product title must be between 10 and 80 charachters";
@@ -25,5 +29,6 @@ export const errValidation=(product:Objdata)=>
     if(!product.price.trim() || isNaN(Number(product.price))){
         errors.price="valid price is required"
     }
+   
     return errors
 }

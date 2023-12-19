@@ -10,10 +10,10 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 interface Iprops{
-    selected:Icateg ;
+    selected:{name:string , imageURL:string} ;
     setSelected:(cated:Icateg)=>void
 }
-const Selectmenue = ({selected , setSelected}:Iprops)=> {
+const Selectmenue = ({selected , setSelected }:Iprops)=> {
 
 
   return (

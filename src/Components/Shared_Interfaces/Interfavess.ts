@@ -1,3 +1,5 @@
+import { Tproductsname } from "../Types/Types";
+
 export interface Iproducts{
     id?: string;
     title: string;
@@ -12,7 +14,7 @@ export interface Iproducts{
   }
 export interface Iinputs{
   id:string ,
-  name:'title' | 'description' | 'imageURL' | 'price' ,
+  name:Tproductsname,
   label:string,
   type:string,
 

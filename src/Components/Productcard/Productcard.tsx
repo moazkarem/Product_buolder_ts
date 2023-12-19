@@ -7,17 +7,20 @@ import Circle from "../Circles/Circle";
 interface Iprops {
   product: Iproducts;
   setEditproduct:(product:Iproducts)=>void
-  openModalEdit:()=>void
+  openModalEdit:()=>void ,
+  setindexproduct:(val:number)=>void,
+  idx:number
 }
 
 
-const Productcard = ({ product , setEditproduct , openModalEdit}: Iprops) => {
+const Productcard = ({ product , setEditproduct , openModalEdit , setindexproduct , idx}: Iprops) => {
 
   /* _______________ Edit Handeler _________ */
 
 const editHandeler = ()=>{
   setEditproduct(product)
   openModalEdit()
+  setindexproduct(idx)
   
 }
   const { title, description, imageURL, price , category , colors } = product;

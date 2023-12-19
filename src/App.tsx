@@ -14,6 +14,7 @@ import { errValidation } from "./Components/Validation";
 import Errormsg from "./Components/Error/Errormsg";
 import Circle from "./Components/Circles/Circle";
 import Selectmenue from "./Components/Ui/Selectmenue";
+import { Tproductsname } from "./Components/Types/Types";
 
 const App = () => {
   const defaultobj = {
@@ -29,6 +30,7 @@ const App = () => {
   };
   const [tempColor, setTempColor] = useState<string[]>([]);
   const [Myproductsarr, setMyproductsarr] = useState(Productdata);
+  const[indexproduct , setindexproduct]=useState<number>(0)
   const [selected, setSelected] = useState(CategData[0]);
   const [editproduct , setEditproduct] = useState<Iproducts>(defaultobj)
   const [isOpenEdit, setisOpenEdit] = useState(false);
@@ -40,11 +42,11 @@ const App = () => {
     function openModalEdit() {
       setisOpenEdit(true);
     }
-  const Myproducts = Myproductsarr.map((product) => (
-    <Productcard key={product.id} product={product} setEditproduct={setEditproduct} openModalEdit={openModalEdit}/>
+  const Myproducts = Myproductsarr.map((product , idx) => (
+    <Productcard key={product.id} product={product} idx={idx} setindexproduct={setindexproduct} setEditproduct={setEditproduct} openModalEdit={openModalEdit}/>
   ));
 
-  console.log(editproduct , 'my edit  ');
+
   
   const circles = colors__circle.map((color) => (
     <Circle
@@ -59,6 +61,10 @@ const App = () => {
       color={color}
     />
   ));
+
+
+
+
   const [products, setproducts] = useState<Iproducts>(defaultobj);
   const [errObj, seterrObj] = useState({
     title: "",
@@ -114,7 +120,7 @@ const App = () => {
       Object.values(errors).some((val) => val === "") &&
       Object.values(errors).every((val) => val === "");
     if (!hasErrmesg) {
-
+seterrObj(errors)
       return;
     }
 
@@ -147,8 +153,81 @@ const App = () => {
     setIsOpen(true);
   }
 
+/* ______________________________ EDIT SUBMIT HANDELER ______*/
 
 
+
+
+
+const EditSubmitHandeler = (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  const { title, description, imageURL, price } = editproduct;
+  const errors = errValidation({
+    title,
+    description,
+    imageURL,
+    price,
+
+  });
+  const hasErrmesg =
+    Object.values(errors).some((val) => val === "") &&
+    Object.values(errors).every((val) => val === "");
+  if (!hasErrmesg) {
+seterrObj(errors)
+    return;
+  }
+
+  setMyproductsarr((prev) => [
+    ...prev,
+    {
+      ...products,
+      colors: tempColor,
+      id: Math.ceil(Math.random() * 100).toString(),
+      category: selected,
+    },
+  ]);
+  const update = [...Myproductsarr]
+  update[indexproduct]={...editproduct , colors:tempColor.concat(editproduct.colors)}
+  setMyproductsarr(update)
+
+  setEditproduct(defaultobj);
+  setTempColor([]);
+  closeModalEdit();
+};
+
+const changeEditHandeler = (e: ChangeEvent<HTMLInputElement>) => {
+  const { value, name } = e.target;
+  setEditproduct({
+    ...editproduct,
+    [name]: value,
+  });
+
+  seterrObj({
+    ...errObj,
+    [name]: "",
+  });
+};
+
+const repeatInputsEdit = (id:string , name:Tproductsname , label:string)=>{
+  return(
+    <div className="flex flex-col">
+  <label
+htmlFor={id}
+className="mb-[1px] font-medium text-sm text-gray-700"
+>
+{label}
+</label>
+<Input
+onChange={changeEditHandeler}
+name={name}
+value={editproduct[name]}
+type={'text'}
+id={id}
+/>
+<Errormsg msg={errObj[name]} />
+  </div>
+  )
+}
   return (
     <main className="container mx-auto">
       <Button width={"w-52"} className={"bg-red-500  m-5"} onClick={openModal}>
@@ -196,14 +275,18 @@ const App = () => {
 
       /*_________________________________ Edit PRODUCT MODAL */
       <Modal closeModal={closeModalEdit} isOpen={isOpenEdit} title="Edit  Product" >
-        <form onSubmit={submitHandeler} className="space-y-3">
-          {inputs}
-          <Selectmenue selected={selected} setSelected={setSelected} />
+        <form onSubmit={EditSubmitHandeler} className="space-y-3">
+         {repeatInputsEdit('title' ,'title' , 'Title')}
+         {repeatInputsEdit('description' ,'description' , 'product description')}
+         {repeatInputsEdit('imageURL' ,'imageURL' , 'Product Image Url')}
+         {repeatInputsEdit('price' ,'price' , 'product price')}
+       
+           <Selectmenue selected={editproduct.category} setSelected={(value)=>setEditproduct({...editproduct , category:value})} />  
           <div className="circles flex items-center my-3 space-x-2">
             {circles}
-          </div>
-          <div className="circles flex-wrap flex items-center my-3 space-x-2">
-            {tempColor.map((item) => (
+          </div> 
+           <div className="circles flex-wrap flex items-center my-3 space-x-2">
+            {tempColor.concat(editproduct.colors).map((item) => (
               <div
                 key={item}
                 className="p-1  m-1 rounded-md text-xs text-white flex flex-wrap"

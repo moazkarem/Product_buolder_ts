@@ -34,6 +34,8 @@ const App = () => {
   const [selected, setSelected] = useState(CategData[0]);
   const [editproduct , setEditproduct] = useState<Iproducts>(defaultobj)
   const [isOpenEdit, setisOpenEdit] = useState(false);
+  const [isOpenDel, setisOpenDel] = useState(false);
+  const[productdescripe ,setproductdescripe] = useState<Iproducts>(defaultobj)
     /*_______________________________ function Modals Edit_____________ */
     function closeModalEdit() {
       setisOpenEdit(false);
@@ -42,9 +44,19 @@ const App = () => {
     function openModalEdit() {
       setisOpenEdit(true);
     }
+      /*_______________________________ function Modals delete */
+      function closeModalDel() {
+        setisOpenDel(false);
+      }
+    
+      function openModalDel() {
+        setisOpenDel(true);
+      }
   const Myproducts = Myproductsarr.map((product , idx) => (
-    <Productcard key={product.id} product={product} idx={idx} setindexproduct={setindexproduct} setEditproduct={setEditproduct} openModalEdit={openModalEdit}/>
+    <Productcard setproductdescripe={setproductdescripe} key={product.id} product={product} idx={idx} setindexproduct={setindexproduct} setEditproduct={setEditproduct} openModalEdit={openModalEdit} openModalDel={openModalDel} />
   ));
+
+  
 
 
   
@@ -224,9 +236,16 @@ value={editproduct[name]}
 type={'text'}
 id={id}
 />
-<Errormsg msg={errObj[name]} />
+<Errormsg msg={''} />
   </div>
   )
+}
+
+const removeHandeler = ()=>{
+   const filterd = Myproductsarr.filter(product => product.id !== editproduct.id)
+   setMyproductsarr(filterd)
+   closeModalDel()
+
 }
   return (
     <main className="container mx-auto">
@@ -305,6 +324,31 @@ id={id}
               width={"w-44"}
               className="bg-gray-300 "
               onClick={canselHandeler}
+            >
+              Cancel
+            </Button>
+          </div>
+        </form>
+      </Modal>
+
+
+
+
+      /*_________________________________ DELETE PRODUCT MODAL */
+      <Modal closeModal={closeModalDel} isOpen={isOpenDel} title="Delete  Product" >
+        <form onSubmit={EditSubmitHandeler} className="space-y-3">
+   <p>{productdescripe.description}</p>
+
+          <div className="space-x-3  flex justify-center items-center">
+            <Button width={"w-44"} className="bg-gray-900 "
+            onClick={removeHandeler}
+            >
+              Yes , Remove
+            </Button>
+            <Button
+              width={"w-44"}
+              className="bg-gray-300 "
+              onClick={()=>setisOpenDel(false)}
             >
               Cancel
             </Button>

@@ -1,7 +1,7 @@
 import ImagePrpduct from "../Image_component/ImagePrpduct";
 import Button from "../Ui/Button";
 import { Iproducts } from "../Shared_Interfaces/Interfavess";
-import { cutText } from "../utilis/Textslics";
+import { cutPrice, cutText } from "../utilis/Textslics";
 import Circle from "../Circles/Circle";
 
 interface Iprops {
@@ -9,11 +9,13 @@ interface Iprops {
   setEditproduct:(product:Iproducts)=>void
   openModalEdit:()=>void ,
   setindexproduct:(val:number)=>void,
-  idx:number
+  idx:number ,
+  openModalDel:()=>void ,
+  setproductdescripe:(val:Iproducts)=>void
 }
 
 
-const Productcard = ({ product , setEditproduct , openModalEdit , setindexproduct , idx}: Iprops) => {
+const Productcard = ({ product , setEditproduct , openModalEdit , setproductdescripe , openModalDel , setindexproduct , idx}: Iprops) => {
 
   /* _______________ Edit Handeler _________ */
 
@@ -21,10 +23,20 @@ const editHandeler = ()=>{
   setEditproduct(product)
   openModalEdit()
   setindexproduct(idx)
+
   
 }
+
+
   const { title, description, imageURL, price , category , colors } = product;
   const circles = colors.map(color => <Circle key={color} color={color} />)
+    /* _______________ Edit Handeler _________ */
+const delHandeler =()=>{
+  openModalDel()
+  setproductdescripe(product)
+  setEditproduct(product)
+
+}
   return (
     <div className="max-w-sm  text-white lg:max-w-lg mx-auto md:mx-auto lg:me-2 flex flex-col border rounded-md p-2 ">
       <ImagePrpduct
@@ -39,7 +51,7 @@ const editHandeler = ()=>{
       </div>
 
       <div className="flex  items-center  justify-between">
-        <span>${price}</span>
+        <span>${cutPrice(price)}</span>
 
         <ImagePrpduct
           src={category.imageURL}
@@ -59,7 +71,8 @@ const editHandeler = ()=>{
         <Button
           width={"w-40"}
           className="bg-teal-600"
-         
+         onClick={delHandeler
+         }
         >
           Delete
         </Button>
